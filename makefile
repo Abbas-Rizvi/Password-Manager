@@ -4,7 +4,7 @@ CXX_FLAGS := -std=c++20
 BIN     := bin
 SRC     := src
 INCLUDE := include
-LIB     := lib
+LIB     := sqlite3
 LIBRARIES   :=
 EXECUTABLE  := main
 
@@ -18,7 +18,7 @@ run: clean all
 
 $(BIN)/$(EXECUTABLE): $(SRC)/*.cpp
 	@echo "Building..."
-	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) -L$(LIB) $^ -o $@ $(LIBRARIES)
+	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) -l $(LIB) $^ -o $@ $(LIBRARIES)
 
 clean:
 	@echo "cleaning"

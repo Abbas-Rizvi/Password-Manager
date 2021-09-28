@@ -1,52 +1,53 @@
 #include <stdio.h>
 #include <string>
 #include <iostream>
-#include <fstream>
 #include <random>
 
-class generate {
+#pragma once
+
+class generate{
 
     // sets of characters for password generation
     // make this static later
     const std::string capSet = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
     const std::string lowSet = "abcdefghijklmnopqrstuvwxyz";
     const std::string numSet = "0123456789";
-    const std::string symSet = "!@#$%^&*()_+-=[]{}|;:'\",<.>/?";
+    const std::string symSet = "!@#$%^&*()_+-=[]{}|;:\",<.>/?";
 
     private:
-
-        std::string password  = "";
-
+    
         // Create a password
-         void createPass(bool caps, bool nums, bool symb,int length){
+        std::string createPass(bool caps, bool nums, bool symb,int length){
+            std::string password  = "";
 
-             std::string combined = lowSet;
+             std::string combinedSet = lowSet;
 
-             combined += caps ? capSet : "";
-             combined += nums ? numSet : "";
-             combined += symb ? symSet : "";
+             combinedSet += caps ? capSet : "";
+             combinedSet += nums ? numSet : "";
+             combinedSet += symb ? symSet : "";
 
+            char randChar;
 
-            for (int i = 0; i < length; i++)
-                password += combined[rand() % combined.length() + 1];
+            for (int i = 0; i < length; i++){
+                randChar = combinedSet[rand() % combinedSet.length() + 1];
+
+                while (randChar == '\0')
+                    randChar = combinedSet[rand() % combinedSet.length() + 1];
+
+                password += randChar;
+            }
+
+            return password;
          }
+
+   
 
     public:
 
         // generate password based on input param
-        generate(bool capsIn, bool numsIn, bool symbIn, int length){
+        std::string generateNew(bool capsIn, bool numsIn, bool symbIn, int length){
             std::cout << "Generating Password..." << std::endl;
-            createPass(capsIn,numsIn,symbIn,length);
-            std::cout << "Password Generated!" << std::endl;
+            return createPass(capsIn,numsIn,symbIn,length);
         }
 
-        //implement databse write
-        void writePass(){
-
-            std::ofstream output;
-            output.open("passwords.txt");
-            output << password;
-            output.close();
-        }
 };
-
