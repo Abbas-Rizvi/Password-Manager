@@ -16,10 +16,53 @@ class account{
             db.open((database_path + "/" + databse_name));
         }
 
-        void search();
+        void search(){
+            std::cout<<"\n*** Search ***\n" << std::endl;
+
+            std::cout<<"Search Wesbite [1] or Username [2]: ";
+            
+            char input;
+            std::cin >> input;
+
+            int i = 0;
+            while (i < 3){
+
+                //if wesbite
+                if (input == '1'){
+                    std::cout<<"Enter Username: ";
+                    std::string website;
+                    std::cin >> website;
+                    db.searchPassWebsite(website);
+                    break;
+
+                } else if (input == '2'){
+                    std::cout<<"Enter Username: ";
+                    std::string username;
+                    std::cin >> username;
+
+                    db.searchPassUser(username);
+                    break;
+                }else {
+                    i++;
+                    std::cout <<"invalid entry" <<std::endl;
+
+                    if (i < 3){
+                        std::cout<<"Search Wesbite [1] or Username [2]: ";
+                        std::cin >> input;
+                    } else {
+                        std::cout <<"\nToo many invalid entries; Returning to menu" <<std::endl;
+                    }
+                }
+            }
+
+
+        }
         
 
         void add(){
+            std::cout<<"\n*** New Entry ***\n" << std::endl;
+
+
             // user enters website and username
             std::cout<<"Enter Website Name: ";
             std::string website;
@@ -77,6 +120,9 @@ class account{
                     }
                 }
             }
+
+  
+            
 
             
         }

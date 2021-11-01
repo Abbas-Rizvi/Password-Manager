@@ -2,6 +2,8 @@
 #include <string>
 #include <iostream>
 #include <random>
+#include <stdlib.h>   
+#include <time.h> 
 
 #pragma once
 
@@ -28,6 +30,10 @@ class generate{
 
             char randChar;
 
+            //use seeded random
+            srand (time(NULL));
+
+            //pick random characters from the combined set
             for (int i = 0; i < length; i++){
                 randChar = combinedSet[rand() % combinedSet.length() + 1];
 
@@ -44,9 +50,9 @@ class generate{
 
     public:
 
-        // generate password based on input param
+        // generate password based on input param and return
         std::string generateNew(bool capsIn, bool numsIn, bool symbIn, int length){
-            std::cout << "Generating Password..." << std::endl;
+            std::cout << "\n\nGenerating Password..." << std::endl;
             return createPass(capsIn,numsIn,symbIn,length);
         }
 

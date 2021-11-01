@@ -1,4 +1,5 @@
 #include <fstream>
+#include <cstdlib>
 #include <sqlite3.h>
 #include <iostream>
 
@@ -30,6 +31,7 @@ class database{
         // Open a new SQLITE3 Database and Createa table
         void open(std::string location){
           
+          
             //open database
             rc = sqlite3_open(location.c_str(), &db);
 
@@ -40,10 +42,10 @@ class database{
             }
 
 
-            //create a table
+            //create a table if not already exists
             std::string sqlTable;
 
-            sqlTable = "CREATE TABLE PASSWORDS( " 
+            sqlTable = "CREATE TABLE IF NOT EXISTS PASSWORDS( " 
                         "ID INTEGER  PRIMARY KEY    AUTOINCREMENT, "
                         "WEBSITE            VARCHAR(255),        "
                         "USERNAME           VARCHAR(255)        NOT NULL, "
@@ -106,6 +108,37 @@ class database{
 
         }
 
+        void searchPassUser(std::string username){
+            std::string sqlCmd = "SELECT WEBSITE,USERNAME,PASSWORD FROM PASSWORDS WHERE USERNAME=\"" + username + "\";"; 
+
+            zErrMsg = 0;
+
+            rc = sqlite3_exec(db,sqlCmd.c_str(),callback,0,&zErrMsg);
+
+
+            if( rc != SQLITE_OK ){
+                fprintf(stderr, "SQL error: %s\n", zErrMsg);
+                sqlite3_free(zErrMsg);
+            } else {
+                std::cout << "Query Success!"; 
+            }
+        }
+
+        void searchPassWebsite(std::string website){
+                std::string sqlCmd = "SELECT WEBSITE,USERNAME,PASSWORD FROM PASSWORDS WHERE WEBSITE=\"" + website + "\";"; 
+
+                zErrMsg = 0;
+
+                rc = sqlite3_exec(db,sqlCmd.c_str(),callback,0,&zErrMsg);
+
+
+                if( rc != SQLITE_OK ){
+                    fprintf(stderr, "SQL error: %s\n", zErrMsg);
+                    sqlite3_free(zErrMsg);
+                } else {
+                    std::cout << "Query Success!"; 
+                }
+            }
 
 
 };
